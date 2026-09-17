@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Odin — QAD Lead Intelligence</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --night:   #0d1117;
+    --deep:    #161b22;
+    --surface: #1f2631;
+    --rule:    #2d3748;
+    --ink:     #e6edf3;
+    --ink-2:   #8b949e;
+    --ink-3:   #484f58;
+    --gold:    #c9a84c;
+    --gold-2:  #f0c96a;
+    --gold-soft: rgba(201,168,76,.12);
+    --accent:  #4f9cf9;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--night);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% -10%, rgba(201,168,76,.18) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 80% 80%, rgba(79,156,249,.07) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .rune {
+    font-size: 56px;
+    line-height: 1;
+    margin-bottom: 28px;
+    filter: drop-shadow(0 0 24px rgba(201,168,76,.4));
+    user-select: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(48px, 8vw, 88px);
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.05;
+    margin-bottom: 24px;
+    letter-spacing: -.02em;
+  }
+
+  .hero-sub {
+    font-size: clamp(16px, 2.5vw, 20px);
+    color: var(--ink-2);
+    max-width: 540px;
+    margin: 0 auto 48px;
+    font-weight: 300;
+    line-height: 1.55;
+  }
+
+  /* ── Buttons ── */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--gold);
+    color: var(--night);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background .15s, transform .1s;
+  }
+  .btn-primary:hover { background: var(--gold-2); transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--ink-2);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 14px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: 1px solid var(--rule);
+    cursor: pointer;
+    transition: border-color .15s, color .15s;
+  }
+  .btn-secondary:hover { border-color: var(--ink-3); color: var(--ink); }
+
+  .hero-cta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 64px;
+  }
+
+  .hero-note {
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+
+  /* ── How it works ── */
+  .steps {
+    display: flex;
+    gap: 0;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    max-width: 720px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .step {
+    flex: 1;
+    min-width: 160px;
+    max-width: 200px;
+    text-align: center;
+    padding: 0 16px;
+    position: relative;
+  }
+
+  .step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 18px;
+    right: -8px;
+    width: 16px;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+  }
+
+  .step-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .step-desc {
+    font-size: 12px;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+
+  /* ── Features section ── */
+  .section {
+    padding: 80px 24px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 16px;
+    letter-spacing: -.01em;
+    line-height: 1.2;
+  }
+
+  .section-body {
+    font-size: 16px;
+    color: var(--ink-2);
+    max-width: 540px;
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .feature {
+    background: var(--deep);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 24px;
+    transition: border-color .15s;
+  }
+  .feature:hover { border-color: var(--ink-3); }
+
+  .feature-icon {
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+
+  .feature-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .feature-desc {
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.55;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    height: 1px;
+    background: var(--rule);
+    margin: 0 24px;
+  }
+
+  /* ── Requirement pills ── */
+  .req-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+
+  .req-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--gold-soft);
+    border: 1px solid rgba(201,168,76,.25);
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+
+  /* ── Bottom CTA ── */
+  .bottom-cta {
+    text-align: center;
+    padding: 80px 24px;
+    background: var(--deep);
+    border-top: 1px solid var(--rule);
+  }
+
+  .bottom-cta h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+    margin-bottom: 16px;
+    letter-spacing: -.01em;
+  }
+
+  .bottom-cta p {
+    color: var(--ink-2);
+    font-size: 16px;
+    font-weight: 300;
+    max-width: 420px;
+    margin: 0 auto 36px;
+  }
+
+  /* ── Footer ── */
+  footer {
+    background: var(--night);
+    border-top: 1px solid var(--rule);
+    padding: 24px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-3);
+  }
+
+  /* ── Download modal ── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.7);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--deep);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 36px;
+    max-width: 480px;
+    width: 100%;
+    position: relative;
+  }
+
+  .modal h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+
+  .modal p { font-size: 14px; color: var(--ink-2); margin-bottom: 16px; line-height: 1.6; }
+
+  .modal-steps {
+    list-style: none;
+    counter-reset: ms;
+    margin-bottom: 24px;
+  }
+
+  .modal-steps li {
+    counter-increment: ms;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    font-size: 13.5px;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+
+  .modal-steps li::before {
+    content: counter(ms);
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--gold-soft);
+    border: 1px solid rgba(201,168,76,.3);
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+
+  .modal-steps li b { color: var(--ink); }
+
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: var(--ink-3);
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px;
+  }
+  .modal-close:hover { color: var(--ink); }
+
+  .modal-dl-btn {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .modal-note {
+    font-size: 11.5px;
+    color: var(--ink-3);
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .step:not(:last-child)::after { display: none; }
+    h1 { font-size: 44px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="rune">᚛</div>
+  <p class="hero-eyebrow">QAD · Life Sciences &amp; Industrial Manufacturing · EMEA</p>
+  <h1>Odin</h1>
+  <p class="hero-sub">Intelligence-driven lead generation for QAD's EMEA manufacturing pipeline. Find, score and research net-new prospects across the Nordics, Netherlands, UK and Ireland.</p>
+
+  <div class="hero-cta">
+    <button class="btn-primary" onclick="document.getElementById('modal').classList.add('open')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Open Odin
+    </button>
+    <a href="#how" class="btn-secondary">How it works</a>
+  </div>
+
+  <div id="how" class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-title">Download</div>
+      <div class="step-desc">Get the Odin file — a single HTML file, no install needed</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-title">Open Claude</div>
+      <div class="step-desc">Go to claude.ai and start a new conversation</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-title">Upload &amp; run</div>
+      <div class="step-desc">Attach the file, type "Open this as an artifact" — you're live</div>
+    </div>
+  </div>
+
+  <p class="hero-note" style="margin-top:40px">Requires a Claude account (free or Pro) · Your leads stay in your browser · Nothing shared between users</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Features ── -->
+<div class="section">
+  <p class="section-label">What Odin does</p>
+  <h2 class="section-title">Every tool a pipeline hunter needs</h2>
+  <p class="section-body">Purpose-built for QAD's EMEA team. Odin finds, scores and helps you engage net-new manufacturers — all fact-checked, all net-new, all ready to work.</p>
+
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon">🔍</div>
+      <div class="feature-title">Discover</div>
+      <div class="feature-desc">Claude proposes real manufacturers matching QAD's ICP, scored across 5 dimensions, with ERP intelligence and positioning built in.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">⚡</div>
+      <div class="feature-title">Trigger scan</div>
+      <div class="feature-desc">Hunt by M&A, Legacy ERP, Legislation, Technology deadline, Organisation change, Operations event — or Golden QAD Prospect.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">⭐</div>
+      <div class="feature-title">Golden QAD Prospect</div>
+      <div class="feature-desc">Finds companies that mirror your best reference customers — same profile, same pain. Lead with a peer story that lands.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">📋</div>
+      <div class="feature-title">Score a list</div>
+      <div class="feature-desc">Paste any list of companies — Odin researches and scores each one against QAD's ICP so you know where to focus.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">✉️</div>
+      <div class="feature-title">Full outreach cadence</div>
+      <div class="feature-desc">7-step sequence with LinkedIn note, email, voicemail script, call cheat sheet and break-up note — in the right language for each country.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">⏰</div>
+      <div class="feature-title">Compliance clock</div>
+      <div class="feature-desc">11 live regulatory and technology deadlines across your territory. Auto-refreshes quarterly so you always have current talk tracks.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🛡</div>
+      <div class="feature-title">Fact-checked results</div>
+      <div class="feature-desc">Companies verified as actively trading with current legal names. ERP versions only stated when cited in a source. Confidence graded on every card.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🔒</div>
+      <div class="feature-title">Fully private</div>
+      <div class="feature-desc">Leads live in your browser only. Nothing shared between colleagues. Each person runs a fully independent instance.</div>
+    </div>
+  </div>
+
+  <div class="req-row">
+    <span class="req-pill">✓ Sweden · Norway · Denmark · Finland</span>
+    <span class="req-pill">✓ Netherlands · UK · Ireland</span>
+    <span class="req-pill">✓ Life Sciences</span>
+    <span class="req-pill">✓ Industrial Manufacturing</span>
+    <span class="req-pill">✓ Net-new pipeline only</span>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── Bottom CTA ── -->
+<div class="bottom-cta">
+  <h2>Ready to hunt?</h2>
+  <p>Download Odin, open it in Claude, and have your first leads in under two minutes.</p>
+  <button class="btn-primary" onclick="document.getElementById('modal').classList.add('open')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Open Odin
+  </button>
+</div>
+
+<!-- ── Footer ── -->
+<footer>
+  Odin · QAD EMEA Sales Intelligence · Built with Claude &nbsp;·&nbsp; Your data never leaves your browser
+</footer>
+
+<!-- ── Modal ── -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')" aria-label="Close">✕</button>
+    <h3>Open Odin</h3>
+    <p>Odin runs inside Claude — it takes about 30 seconds to get started.</p>
+
+    <ol class="modal-steps">
+      <li><b>Download the file</b> using the button below — it's a single HTML file called <code style="font-size:12px;color:var(--gold)">odin-qad-lead-finder.html</code></li>
+      <li><b>Go to claude.ai</b> and sign in (free account works; Pro is faster for large searches)</li>
+      <li><b>Start a new conversation</b> — click the ✏️ new chat button</li>
+      <li><b>Attach the file</b> using the paperclip icon in the message box</li>
+      <li>Type <b>"Open this as an artifact"</b> and press Enter</li>
+      <li>Odin opens — you should see <b>"Connected. Ready to find leads."</b> in green</li>
+    </ol>
+
+    <a href="odin-qad-lead-finder.html" download class="btn-primary modal-dl-btn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download odin-qad-lead-finder.html
+    </a>
+    <p class="modal-note">~145 KB · No install · Works on any device with Claude access</p>
+  </div>
+</div>
+
+</body>
+</html>
